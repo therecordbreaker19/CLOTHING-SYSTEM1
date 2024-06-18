@@ -1,0 +1,41 @@
+<% provide(:title, 'All users') %>
+  <div class="center jumbotron">
+  <h2>
+    <% if params[:search].blank?  %>
+      All Users (<%= @users.count %>)
+    <%else %>
+      Found => [
+      <%= pluralize(@users.count, " ] user") %>
+    <%end %>
+  </h2>
+
+  <!-- Search Bar -->
+  <%= form_tag(users_path, :method => "get", id: "search-form") do %>
+  <div class="input-group" id="adv-search">
+    <%= text_field_tag :search, params[:search], placeholder: "Search..." , class: "form-control" %>
+    <div class="input-group-btn">
+      <%= button_tag(type: 'submit', class: "btn btn-primary") do %>
+      <span class="glyphicon glyphicon-search"></span>
+    <% end %>
+    </div>
+  </div>
+  <% end %>
+
+</div>
+
+<%= will_paginate %>
+
+<% if @users.present? %>
+  <ul class="users">
+    <%= render @users %>
+  </ul>
+<%else %>
+  <p>
+    <br/><br/><hr/>
+    There are no users containing the term(s) => [
+    <strong><%= params[:search] %></strong>
+    ] .
+  </p>
+<%end %>
+
+<%= will_paginate %>
